@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('bootstrap.css');
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+body {
+  display: block;
+  margin: 0px;
+}
+.fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+.google-logo {
+  width: 16px;
+}
+button.google-login, button.login, button.signup {
+  width:100%;
+}
+

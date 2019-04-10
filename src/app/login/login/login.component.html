@@ -1,0 +1,22 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <app-error [error]="error" (dismiss)="close()"></app-error>
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="inputEmail1">Email address</label>
+          <input formControlName="username" type="email" class="form-control" id="inputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label for="inputPassword1">Password</label>
+          <input formControlName="password" type="password" class="form-control" id="inputPassword1" placeholder="Password">
+        </div>
+        <button type="submit" mat-raised-button color="primary" class="login">Log in</button>
+        <button mat-raised-button color="primary" class="google-login mt-2">
+          <img class="google-logo mr-2" src="assets/img/google-logo.png">
+          Continue with Google
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
