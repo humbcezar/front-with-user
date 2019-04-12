@@ -19,6 +19,7 @@ export class LoginService {
     }).pipe(
       map((res: LoginResponseInterface) => {
         localStorage.setItem('access_token', res.accessToken);
+        localStorage.setItem('refresh_token', res.refreshToken);
       })
     );
   }
