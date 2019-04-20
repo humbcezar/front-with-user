@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {catchError} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import {LoginService} from '../login/login.service';
-import {throwError} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,15 +18,20 @@ export class AuthenticateService {
     return this._authenticated;
   }
 
-  authenticate() {
+  authenticate(): Observable<any> {
+    const refreshToken = localStorage.getItem('refresh_token');
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken || !refreshToken) {
+      this._authenticated = false;
+      return of(false);
+    }
     const headers = new HttpHeaders()
       .append('content-type', 'application/x-www-form-urlencoded')
-      .append('Authorization', 'Bearer ' + localStorage.getItem('access_token'));
+      .append('Authorization', 'Bearer ' + accessToken);
 
-    this.http.post(environment.apiUrl + 'users/authenticate', null, {headers})
+    return this.http.post(environment.apiUrl + 'users/authenticate', null, {headers})
       .pipe(
         catchError(err => {
-          const refreshToken = localStorage.getItem('refresh_token');
           if (refreshToken) {
             return this.loginService.login({
               'grant_type': 'refresh_token',
@@ -34,14 +39,14 @@ export class AuthenticateService {
             });
           }
           return throwError(err);
-        })
-      )
-      .subscribe(
-        res => {
-          this._authenticated = true;
-        },
-        err => {
-          this._authenticated = false;
-        });
+        }),
+        tap(
+          res => {
+            this._authenticated = true;
+          },
+          err => {
+            this._authenticated = false;
+          })
+      );
   }
 }
