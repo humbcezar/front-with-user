@@ -14,11 +14,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authenticateService.authenticate();
+    this.authenticateService.authenticate().subscribe();
   }
 
   logoff() {
     localStorage.clear();
-    this.authenticateService.authenticate();
+    this.authenticateService.authenticate().subscribe();
   }
 }

@@ -45,7 +45,7 @@ export class SignupComponent implements OnInit {
       .subscribe(
         (res) => {
         this.router.navigate(['/']);
-        this.authenticateService.authenticate();
+        this.authenticateService.authenticate().subscribe();
       },
       err => {
         this.error = err.error;
