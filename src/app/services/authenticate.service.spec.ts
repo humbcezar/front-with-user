@@ -1,12 +1,16 @@
-import { TestBed } from '@angular/core/testing';
-
 import { AuthenticateService } from './authenticate.service';
+import {LoginService} from '../login/login.service';
+import {HttpClient} from '@angular/common/http';
+import {of} from 'rxjs';
 
 describe('AuthenticateService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
-
-  it('should be created', () => {
-    const service: AuthenticateService = TestBed.get(AuthenticateService);
-    expect(service).toBeTruthy();
+  it('should authenticate with access token', () => {
+    const httpClientSpy: {post: jasmine.Spy} = jasmine.createSpyObj('HttpClient', ['post']);
+    const loginService: LoginService = jasmine.createSpyObj('LoginService', ['login']);
+    const authenticateService: AuthenticateService = new AuthenticateService(<any> httpClientSpy, loginService);
+    httpClientSpy.post.and.returnValue(of({}));
+    authenticateService.authenticate().subscribe(() => {
+      expect(authenticateService.authenticated).toEqual(true);
+    });
   });
 });
